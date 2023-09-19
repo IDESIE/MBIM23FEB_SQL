@@ -4,6 +4,8 @@
 /* 1
 Describir la tabla floors
 */
+SELECT *
+FROM floors;
 
 /* 2
 Describir la tabla spaces
