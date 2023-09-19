@@ -9,23 +9,28 @@ FROM FLOORS
 /* 2
 Describir la tabla spaces
 */
-
+SELECT *
+FROM SPACES;
 /* 3
 Datos de la tabla components
 */
-
+SELECT *
+FROM COMPONENTS;
 /* 4
 Datos de la tabla component_types
 */
-
+SELECT *
+FROM COMPONENT_TYPES;
 /* 5
 Id, nombre de los facilities
 */
-
+SELECT ID, NAME
+FROM FACILITIES;
 /* 6
 Nombre, elevación e id del facility de las plantas
 */
-
+SELECT NAME, ELEVATION, FACILITYID
+FROM FLOORS;
 /* 7
 Nombre, area bruta, volumen de los espacios
 */
