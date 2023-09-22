@@ -10,22 +10,32 @@ FROM floors;
 /* 2
 Describir la tabla spaces
 */
+SELECT *
+FROM spaces;
 
 /* 3
 Datos de la tabla components
 */
+SELECT *
+FROM spaces;
 
 /* 4
 Datos de la tabla component_types
 */
+SELECT *
+FROM component_types;
 
 /* 5
 Id, nombre de los facilities
 */
+SELECT id
+FROM facilities;
 
 /* 6
 Nombre, elevación e id del facility de las plantas
 */
+SELECT concat(concat(name,' | '),id ),netarea, createdat, 'hola'
+FROM spaces;
 
 /* 7
 Nombre, area bruta, volumen de los espacios
@@ -99,6 +109,21 @@ ordenados descendentemente por código de activo
 Nombre, código de activo, número de serie de los componentes
 que tengan número de serie del facility 1
 */
+select 
+   name, spaceid, serialnumber,assetidentifier
+from components
+where
+    facilityid=1
+    and spaceid is null
+    
+order by assetidentifier desc;
+
+select count(*), count(spaceid), count(distinct spaceid), count(warrantystarton), count (distinct warrantystarton)
+from components where facilityid=1;
+
+select count (*)
+from components
+where spaceid is null and facilityid= 1;
 
 /* 22
 Nombre de los espacios que empiezan por la letra A donde floorid = 1
@@ -107,7 +132,11 @@ Nombre de los espacios que empiezan por la letra A donde floorid = 1
 /* 23
 Lista de espacios que su segunda letra es una 's' donde floorid = 1
 */
-
+select 
+   name, floorid
+from spaces
+where
+    lower(name) like '_s%' and floorid=1 ;
 /* 24
 Lista de tipos de componente del facility 1 
 donde el nombre contiene el texto 'con'
@@ -120,6 +149,14 @@ pero como volumen una etiqueta que indique
 'BAJO' si es menor a 10, 'ALTO' si es mayor a 1000
 y 'MEDIO' si está entre medias
 */
+select name, volume,
+    case
+        when volume < 10 then 'BAJO'
+        when volume between 10 and 1000 then 'MEDIO'
+        else 'ALTO'
+    end "ALIAS"
+from spaces;
+
 
 /* 26
 Nombre, fecha de instalación, fecha de garantia
@@ -135,6 +172,13 @@ del floorid 1
 /* 28
 Lista de espacios que no son Aula del floorid = 1
 */
+select 
+   name
+from spaces
+where
+    floorid = 1 
+    and name not like 'Aula%';
+
 
 /* 29
 Lista de los tipos de componentes que tienen duracion de la garantia de las partes
@@ -150,6 +194,11 @@ del facility 1
 Lista de los tipos de componentes que tienen en el nombre un guión bajo
 del facility 1
 */
+select 
+   name
+from COMPONENT_TYPES
+where FACILITYID = 1 
+    and name like '%a_%' escape 'a';
 
 --
 ------------------------------------------------------------------------------------------------
