@@ -50,3 +50,51 @@ SELECT COUNT(NAME)
     FROM COMPONENT_TYPES
     WHERE FACILITYID=1
     AND NAME LIKE '%a_%' escape 'a';
+
+    SELECT 
+    TO_CHAR(installatedon,'Day')
+FROM COMPONENTS
+WHERE FACILITYID=1;
+
+SELECT
+    ROUND(SUM(NETAREA),2),
+    ROUND(MAX(NETAREA),2),
+    ROUND(MIN(NETAREA),2),
+    ROUND(AVG(NETAREA),2)
+FROM SPACES
+WHERE FLOORID=1;
+
+
+SELECT 
+    round(AVG(NETAREA))"Media",
+    round((AVG(NETAREA)+MIN(NETAREA))/2) "MediaBaja",
+    round((AVG(NETAREA)+MAX(NETAREA))/2) "MediaAlta"
+FROM SPACES
+WHERE FLOORID=1;
+
+
+SELECT 
+    ROUND((COUNT(WARRANTYSTARTON)*100)/COUNT(*),2)
+FROM COMPONENTS
+WHERE FACILITYID=1;
+
+SELECT 
+    TO_CHAR(installatedon,'Day'),
+    Count(installatedon)
+FROM COMPONENTS
+WHERE FACILITYID=1
+Group By TO_CHAR(installatedon,'Day'), TO_CHAR(installatedon,'d')
+ORDER BY TO_CHAR(installatedon,'d');
+
+SELECT Count(installatedon)
+FROM COMPONENTS
+WHERE FACILITYID=1;
+
+SELECT 
+    TO_CHAR(installatedon,'Day'),
+    Count(*)
+FROM COMPONENTS
+WHERE FACILITYID=1
+Group By TO_CHAR(installatedon,'Day'),TO_CHAR(installatedon,'d')
+Having count(installatedon)>470
+Order By TO_CHAR(installatedon,'d');
