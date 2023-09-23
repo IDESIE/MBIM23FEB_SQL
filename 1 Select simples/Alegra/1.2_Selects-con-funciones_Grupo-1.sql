@@ -22,7 +22,13 @@ del facility 1
 De los espacios, obtener la suma de áreas, cuál es el mínimo, el máximo y la media de áreas
 del floorid 1. Redondeado a dos dígitos.
 */
-
+SELECT 
+    ROUND(SUM(NETAREA),2),
+    ROUND(MAX(NETAREA),2),
+    ROUND(MIN(NETAREA),2),
+    ROUND(AVG(NETAREA),2)
+FROM SPACES
+WHERE FLOORID=1;
 /* 4
 ¿Cuántos componentes tienen espacio? ¿Cuántos componentes hay?
 En el facility 1. Ej.
@@ -39,7 +45,12 @@ Mostrar tres medias que llamaremos:
 de los espacios del floorid 1
 Solo la parte entera, sin decimales ni redondeo.
 */
-
+SELECT 
+    round(AVG(NETAREA))"Media",
+    round((AVG(NETAREA)+MIN(NETAREA))/2) "MediaBaja",
+    round((AVG(NETAREA)+MAX(NETAREA))/2) "MediaAlta"
+FROM SPACES
+WHERE FLOORID=1;
 /* 6
 Cuántos componentes hay, cuántos tienen fecha inicio de garantia, cuántos tienen espacio, y en cuántos espacios hay componentes
 en el facility 1.
@@ -54,7 +65,10 @@ del facility 1.
 Mostrar el porcentaje de componentes que tienen fecha de inicio de garantía
 del facility 1.
 */
-
+SELECT 
+    ROUND((COUNT(WARRANTYSTARTON)*100)/COUNT(*),2)
+FROM COMPONENTS
+WHERE FACILITYID=1;
 /* 9
 Listar las cuatro primeras letras del nombre de los espacios sin repetir
 del facility 1. 
@@ -102,7 +116,13 @@ Viernes  	468
 Sábado   	404
 Domingo  	431
 */
-
+SELECT 
+    TO_CHAR(installatedon,'Day'),
+    Count(installatedon)
+FROM COMPONENTS
+WHERE FACILITYID=1
+Group By TO_CHAR(installatedon,'Day'), TO_CHAR(installatedon,'d')
+ORDER BY TO_CHAR(installatedon,'d');
 /*13
 Mostrar en base a los cuatro primeros caracteres del nombre cuántos espacios hay
 del floorid 1 ordenados ascendentemente por el nombre.
