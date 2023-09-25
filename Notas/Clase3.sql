@@ -130,3 +130,11 @@ where id in (
         from components
         group by spaceid
         having count(*) = 5);
+
+//*el numero de espacios del espacio llamado cajero*//
+select spaces.name,
+    count(*)
+from components
+    join spaces on spaces.id = components.spaceid
+group by spaces.name
+having count (*)=5;
