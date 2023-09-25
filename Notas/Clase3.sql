@@ -136,5 +136,6 @@ select spaces.name,
     count(*)
 from components
     join spaces on spaces.id = components.spaceid
+where spaces.name = 'CAJERO'
 group by spaces.name
 having count (*)=5;
