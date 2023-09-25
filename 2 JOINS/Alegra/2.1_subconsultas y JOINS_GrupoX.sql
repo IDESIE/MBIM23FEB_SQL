@@ -10,7 +10,12 @@ además de la tabla floors el id, nombre y facilityid
 Lista de id de espacios que no están en la tabla de componentes (spaceid)
 pero sí están en la tabla de espacios.
 */ 
-
+select  id 
+    from spaces 
+where id not in (   
+    select spaceid 
+    from components
+    where spaceid is not null);
 
 /*3
 Lista de id de tipos de componentes que no están en la tabla de componentes (typeid)
@@ -30,11 +35,20 @@ Mostrar de component_types los campos: material, id;
 y de la tabla components los campos: typeid, id, assetidentifier
 de los componentes con id 10000, 20000, 300000
 */
-
+select  component_types.material, component_types.id, components.typeid, components.id, components.assetidentifier
+from components
+   join component_types on components.typeid= component_types.id
+    where components.id in (10000,20000,30000);
 
 /*6
 ¿Cuál es el nombre de los espacios que tienen cinco componentes?
 */
+select     
+    spaces.name
+from components
+    join spaces on spaces.id = components.spaceid
+    group by spaceid, spaces.name
+having count(*)=5;
 
 
 /*7

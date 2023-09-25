@@ -17,12 +17,19 @@ Y de etiqueta del campo "Fecha actual".
 Día en palabras de cuando se instalaron los componentes
 del facility 1
 */
+select 
+    to_char(installatedon, 'Day')
+    from COMPONENTS
+    WHERE FACILITYID=1;
 
 /* 3
 De los espacios, obtener la suma de áreas, cuál es el mínimo, el máximo y la media de áreas
 del floorid 1. Redondeado a dos dígitos.
 */
-
+select 
+    round(avg(netarea),2),round(max(netarea),2),round(min(netarea),2), round(sum(netarea),2)
+    from SPACES
+    WHERE floorid=1;
 /* 4
 ¿Cuántos componentes tienen espacio? ¿Cuántos componentes hay?
 En el facility 1. Ej.
@@ -39,8 +46,13 @@ Mostrar tres medias que llamaremos:
 de los espacios del floorid 1
 Solo la parte entera, sin decimales ni redondeo.
 */
-
-/* 6
+select 
+    round((avg(netarea)+max(netarea))/2 ) "media alta",
+    round((avg(netarea)+min(netarea))/2 ) "media baja", 
+    round(avg(netarea)) "media"
+    from SPACES
+    WHERE floorid=1 ;
+    /* 6
 Cuántos componentes hay, cuántos tienen fecha inicio de garantia, cuántos tienen espacio, y en cuántos espacios hay componentes
 en el facility 1.
 */
@@ -54,6 +66,9 @@ del facility 1.
 Mostrar el porcentaje de componentes que tienen fecha de inicio de garantía
 del facility 1.
 */
+
+select  round((count(warrantystarton)/count(*))*100,2)
+from components where facilityid=1;
 
 /* 9
 Listar las cuatro primeras letras del nombre de los espacios sin repetir
@@ -102,6 +117,14 @@ Viernes  	468
 Sábado   	404
 Domingo  	431
 */
+    
+select
+    count(*), to_char(installatedon, 'Day')
+from components 
+where facilityid=1
+    group by  to_char(installatedon, 'Day'), to_char(installatedon, 'd')
+    order by  to_char(installatedon, 'd');
+
 
 /*13
 Mostrar en base a los cuatro primeros caracteres del nombre cuántos espacios hay
