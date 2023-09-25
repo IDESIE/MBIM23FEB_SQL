@@ -61,7 +61,14 @@ que están en el espacio llamado CAJERO?
 ¿Cuántos componentes
 hay en el espacio llamado CAJERO?
 */
-
+select     
+    spaces.name,
+    count(*)
+from components
+    join spaces on spaces.id = components.spaceid
+where   
+    UPPER(spaces.name) LIKE '%CAJERO%'
+group by spaceid, spaces.name;
 
 /*9
 Mostrar de la tabla spaces: name, id;
