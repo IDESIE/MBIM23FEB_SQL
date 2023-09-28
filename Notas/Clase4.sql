@@ -142,3 +142,28 @@ set description = concat(concat(id,' - '), name),
     updatorid=1,
     updatedat = to_date ('1834-02-12','yyyy-mm-dd')
 where id in (1,3,5,7);
+
+/*Sentencias DML (lenguaje de manipulación de datos) son insert, delete, update */
+
+/*Para ue se guarde COMMIT, para que se deshaga ROLLBACK*/
+
+/* Sentencias DDL (lenguaje de definición de datos) son create, drop (eliminar), alter (modificar), rename */
+
+/*Crear una tabla, definir campos*/ /*constraint_nombre de la tabla_nombre del campo*/
+
+create table 
+    nombre(
+         id number,
+         nombre varchar2(2000),
+         apellido varchar2(2000),
+         nacido date,
+         padre number,
+         constraint pk_nombre_id primary key(id),
+         constraint uq_nombre_nombre unique(nombre),
+         constraint fk_nombre_padre foreign key(padre)
+            references nombre(id)
+         );
+
+insert into nombre(id, nombre, padre)
+values(10, 'pepe', 1);
+
