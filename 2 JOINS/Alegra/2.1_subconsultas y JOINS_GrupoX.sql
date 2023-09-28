@@ -128,6 +128,15 @@ que estén en un aula y no sean tuberias, muros, techos, suelos.
 15
 Nombre, área bruta y volumen de los espacios con mayor área que la media de áreas del facility 1.
 */
+select grossarea, name, volume
+ from spaces
+ where 
+ grossarea > (select avg(grossarea)
+      from floors
+    join spaces on floors.id =spaces.floorid
+    join facilities on facilities.id=floors.facilityid  
+where 
+facilities.id=1);
 
 
 /*
