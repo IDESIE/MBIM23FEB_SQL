@@ -12,12 +12,16 @@ la palabra "de", el mes en minúscula en palabras, la palabra "de", el año en c
 finalizando con un punto. Luego la hora en formato 24h con minutos y segundos.
 Y de etiqueta del campo "Fecha actual".
 */
-
+select TO_CHAR(TO_DATE('11/02/2027 16:06:06', 'DD-MM-YYYY HH24:MI:SS'), 
+                'Day DD "de" month "de" YYYY. HH24:MI:SS') "Feha actual"
+from dual;
 /* 2
 Día en palabras de cuando se instalaron los componentes
 del facility 1
 */
-
+select TO_CHAR(installatedon, 'Day')
+from components
+where facilityid=1;
 /* 3
 De los espacios, obtener la suma de áreas, cuál es el mínimo, el máximo y la media de áreas
 del floorid 1. Redondeado a dos dígitos.
@@ -36,7 +40,14 @@ ConEspacio  Componentes
 ----------------------------
 3500  4000
 */
-
+select count(spaceid) "ConEspacio",
+        count(*)"Componentes"
+from components;
+/*En facility 1*/
+select count(spaceid) "ConEspacio",
+        count(*)"Componentes"
+from components
+where facilityid=1;
 /* 5
 Mostrar tres medias que llamaremos:
 -Media a la media del área bruta
@@ -55,12 +66,21 @@ WHERE FLOORID=1;
 Cuántos componentes hay, cuántos tienen fecha inicio de garantia, cuántos tienen espacio, y en cuántos espacios hay componentes
 en el facility 1.
 */
-
+select count(*) "Componentes",
+        count(warrantystarton) "ConFechaGarantía",
+        count(spaceid) "ConEspacio",
+        count(DISTINCT spaceid)
+from components
+where facilityid=1;
 /* 7
 Mostrar cuántos espacios tienen el texto 'Aula' en el nombre
 del facility 1.
 */
-
+select spaces.name
+from spaces
+    join floors on spaces.floorid = floors.id
+where floors.facilityid=1
+and spaces.name like 'Aula%'
 /* 8
 Mostrar el porcentaje de componentes que tienen fecha de inicio de garantía
 del facility 1.
@@ -81,7 +101,11 @@ Pasi
 Pati
 Serv
 */
-
+select DISTINCT SUBSTR(spaces.name,1,4)
+from spaces
+    join floors on spaces.floorid = floors.id
+where floors.facilityid=1
+order by SUBSTR(spaces.name,1,4) ASC;
 /* 10
 Número de componentes por fecha de instalación del facility 1
 ordenados descendentemente por la fecha de instalación
@@ -91,7 +115,13 @@ Fecha   Componentes
 2021-03-23 34
 2021-03-03 232
 */
-
+select
+        TO_CHAR(TO_DATE(SUBSTR(installatedon, 1, 11), 'DD/MM/RR HH24:MI:SS'), 'YYYY-MM-DD') "Fecha",
+        count(*)"Componentes"
+from components
+where facilityid=1
+group by installatedon
+order by installatedon desc;
 /* 11
 Un listado por año del número de componentes instalados del facility 1
 ordenados descendentemente por año.
@@ -101,7 +131,13 @@ Año Componentes
 2021 344
 2020 2938
 */
-
+select
+        TO_CHAR(TO_DATE(SUBSTR(installatedon, 1, 11), 'DD/MM/RR HH24:MI:SS'), 'YYYY') "Año",
+        count (*)"Componentes"
+from components
+where facilityid=1
+group by TO_CHAR(TO_DATE(SUBSTR(installatedon, 1, 11), 'DD/MM/RR HH24:MI:SS'), 'YYYY')
+order by TO_CHAR(TO_DATE(SUBSTR(installatedon, 1, 11), 'DD/MM/RR HH24:MI:SS'), 'YYYY') desc;
 /* 12
 Nombre del día de instalación y número de componentes del facility 1.
 ordenado de lunes a domingo
@@ -131,7 +167,12 @@ Aula 23
 Aseo 12
 Pasi 4
 */
-
+select SUBSTR(name,1,4) "Nombre",
+        count(*)
+from spaces
+where floorid=1
+group by SUBSTR(name,1,4)
+order by SUBSTR(spaces.name,1,4) ASC;
 /*14
 Cuántos componentes de instalaron un Jueves
 en el facilityid 1
