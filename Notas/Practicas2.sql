@@ -1,5 +1,5 @@
 select TO_CHAR(TO_DATE('11/02/2027 16:06:06', 'DD-MM-YYYY HH24:MI:SS'), 
-                'Day DD "de" month "de" YYYY. HH24:MI:SS') "Feha actual"
+                'Day DD "de" month "de" YYYY. HH24:MI:SS') "Fecha actual"
 from dual;
 
 select TO_CHAR(installatedon, 'Day')
@@ -63,3 +63,15 @@ from spaces
 where floorid=1
 group by SUBSTR(name,1,4)
 order by SUBSTR(spaces.name,1,4) ASC;
+
+select concat(concat(concat(concat(floorid,'-'),id),'-'),name) "Resultado"
+from spaces;
+/*En esta consulta:
+
+Utilizamos LPAD(id, 3, '0') para formatear el id de la siguiente manera:
+id: es el valor que deseas formatear.
+3: es la longitud deseada (en este caso, 3 caracteres).
+'0': es el carácter de relleno (cero) que se agregará a la izquierda si es necesario.*/
+
+select concat(concat(concat(concat(floorid,'-'),LPAD(id,3,'0')),'-'),name) "Resultado"
+from spaces;
