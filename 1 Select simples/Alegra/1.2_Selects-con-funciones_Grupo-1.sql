@@ -177,7 +177,12 @@ order by SUBSTR(spaces.name,1,4) ASC;
 Cuántos componentes de instalaron un Jueves
 en el facilityid 1
 */
-
+SELECT TO_CHAR(TO_DATE(SUBSTR(installatedon, 1, 11), 'DD/MM/RR HH24:MI:SS'), 'Day') "Día",
+       COUNT(*) "Componentes"
+FROM components
+WHERE facilityid = 1
+  AND TO_CHAR(TO_DATE(SUBSTR(installatedon, 1, 11), 'DD/MM/RR HH24:MI:SS'), 'Day') like '%Jueves%'
+GROUP BY TO_CHAR(TO_DATE(SUBSTR(installatedon, 1, 11), 'DD/MM/RR HH24:MI:SS'), 'Day');
 /*15
 Listar el id de planta concatenado con un guión
 seguido del id de espacio concatenado con un guión
@@ -185,5 +190,6 @@ y seguido del nombre del espacio.
 el id del espacio debe tener una longitud de 3 caracteres
 Ej. 3-004-Nombre
 */
- 
+ select concat(concat(concat(concat(floorid,'-'),LPAD(id,3,'0')),'-'),name) "Resultado"
+from spaces;
 ------------------------------------------------------------------------------------------------
