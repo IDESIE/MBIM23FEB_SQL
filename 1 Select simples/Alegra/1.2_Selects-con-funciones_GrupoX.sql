@@ -13,6 +13,8 @@ finalizando con un punto. Luego la hora en formato 24h con minutos y segundos.
 Y de etiqueta del campo "Fecha actual".
 */
 
+SELECT TO_CHAR(SYSDATE, 'Day, DD "de" Month "de" YYYY. HH24:MI:SS') AS "Fecha actual" FROM dual;
+
 /* 2
 Día en palabras de cuando se instalaron los componentes
 del facility 1
@@ -37,6 +39,10 @@ ConEspacio  Componentes
 ----------------------------
 3500  4000
 */
+select count (*), count(distinct spaceid)
+from components
+where spaceid is not null and facilityid= 1; 
+
 
 /* 5
 Mostrar tres medias que llamaremos:
@@ -56,12 +62,17 @@ select
 Cuántos componentes hay, cuántos tienen fecha inicio de garantia, cuántos tienen espacio, y en cuántos espacios hay componentes
 en el facility 1.
 */
+select count(*), count(spaceid), count(distinct spaceid), count(warrantystarton), count (distinct warrantystarton)
+from components where facilityid=1;
 
 /* 7
 Mostrar cuántos espacios tienen el texto 'Aula' en el nombre
 del facility 1.
 */
-
+select name
+from spaces
+where
+  lower(name) like '%aula%';
 /* 8
 Mostrar el porcentaje de componentes que tienen fecha de inicio de garantía
 del facility 1.
@@ -82,7 +93,9 @@ Pasi
 Pati
 Serv
 */
-
+select substr(name,1,4) as name
+from spaces
+order by substr(name,1,4) asc;
 /* 10
 Número de componentes por fecha de instalación del facility 1
 ordenados descendentemente por la fecha de instalación
@@ -92,6 +105,12 @@ Fecha   Componentes
 2021-03-23 34
 2021-03-03 232
 */
+select count(*)as componente ,to_char( installatedon, 'dd-mm-yyyy') as fecha
+from components
+where facilityid=1
+group by installatedon
+order by installatedon desc;
+
 
 /* 11
 Un listado por año del número de componentes instalados del facility 1
@@ -102,6 +121,11 @@ Año Componentes
 2021 344
 2020 2938
 */
+select count(*)as componente ,to_char( installatedon, 'yyyy') as fecha
+from components
+where facilityid=1
+group by installatedon
+order by installatedon desc;
 
 /* 12
 Nombre del día de instalación y número de componentes del facility 1.
@@ -134,12 +158,24 @@ Aula 23
 Aseo 12
 Pasi 4
 */
+select count(*), substr(name,1,4) as name
+from spaces
+where floorid=1
+    group by substr(name,1,4)
+    order by substr(name,1,4) asc;
+
 
 /*14
 Cuántos componentes de instalaron un Jueves
 en el facilityid 1
 */
-
+select
+    count(*), to_char(installatedon, 'Day' )
+from components 
+where facilityid=1 and lower ( to_char(installatedon, 'Day' ) )like '%jueves%'
+    group by  to_char(installatedon, 'Day'), to_char(installatedon, 'd')
+    order by  to_char(installatedon, 'd');
+    
 /*15
 Listar el id de planta concatenado con un guión
 seguido del id de espacio concatenado con un guión
@@ -147,5 +183,7 @@ y seguido del nombre del espacio.
 el id del espacio debe tener una longitud de 3 caracteres
 Ej. 3-004-Nombre
 */
+SELECT CONCAT(CONCAT(CONCAT(name, ' | '), id), CONCAT(' | ', floorid)) AS "spaceName"
+FROM spaces;
  
 ------------------------------------------------------------------------------------------------
